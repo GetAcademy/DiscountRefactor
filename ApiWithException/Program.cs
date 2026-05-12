@@ -13,18 +13,51 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
+app.UseExceptionHandler("/error");
+
 app.MapGet("/weatherforecast", () =>
 {
+    throw new ArgumentException();
     var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
+            new WeatherForecast
+            (
+                DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                Random.Shared.Next(-20, 55),
+                summaries[Random.Shared.Next(summaries.Length)]
+            ))
         .ToArray();
-    return forecast;
+    return Results.Ok(forecast);
 });
+
+
+
+app.MapGet("/error", () =>
+{
+    return Results.Problem(
+        title: "An unexpected error occurred.",
+        statusCode: 500);
+});
+
+//app.MapGet("/weatherforecast", () =>
+//{
+//    try
+//    {
+//        //throw new ArgumentException();
+//        var forecast = Enumerable.Range(1, 5).Select(index =>
+//                new WeatherForecast
+//                (
+//                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+//                    Random.Shared.Next(-20, 55),
+//                    summaries[Random.Shared.Next(summaries.Length)]
+//                ))
+//            .ToArray();
+//        return Results.Ok(forecast);
+//    }
+//    catch
+//    {
+//        return Results.NotFound("error");
+//    }
+//});
 
 app.Run();
 
