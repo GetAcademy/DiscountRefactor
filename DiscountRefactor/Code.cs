@@ -53,21 +53,8 @@ namespace DiscountRefactor
             //    return "Cart total is too low for this discount code.";
             //}
 
-            var discountAmount = 0m;
-
-            if (discountCode.PercentOff.HasValue)
-            {
-                discountAmount = cart.TotalAmount * discountCode.PercentOff.Value / 100m;
-            }
-            else if (discountCode.AmountOff.HasValue)
-            {
-                discountAmount = discountCode.AmountOff.Value;
-            }
-
-            if (discountAmount > cart.TotalAmount)
-            {
-                discountAmount = cart.TotalAmount;
-            }
+            cart.ApplyDiscountCode(discountCode);
+            var discountAmount = cart.CalculateDiscountAmount();
 
             cart.TotalAmount -= discountAmount;
             //cart.AppliedDiscountCode = code;
