@@ -22,6 +22,11 @@
             {
                 throw new ArgumentException("Discount code has expired.");
             }
+
+            if (IsUsed)
+            {
+                throw new ArgumentException("Discount code has already been used.");
+            }
         }
     }
 }

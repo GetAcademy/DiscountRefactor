@@ -43,15 +43,15 @@ namespace DiscountRefactor
             //    return "Discount code has expired.";
             //}
 
-            if (discountCode.IsUsed)
-            {
-                return "Discount code has already been used.";
-            }
+            //if (discountCode.IsUsed)
+            //{
+            //    return "Discount code has already been used.";
+            //}
 
-            if (cart.TotalAmount < discountCode.MinimumAmount)
-            {
-                return "Cart total is too low for this discount code.";
-            }
+            //if (cart.TotalAmount < discountCode.MinimumAmount)
+            //{
+            //    return "Cart total is too low for this discount code.";
+            //}
 
             var discountAmount = 0m;
 
@@ -70,7 +70,7 @@ namespace DiscountRefactor
             }
 
             cart.TotalAmount -= discountAmount;
-            cart.AppliedDiscountCode = code;
+            //cart.AppliedDiscountCode = code;
             discountCode.IsUsed = true;
 
             await _cartRepository.SaveAsync(cart);
@@ -91,13 +91,4 @@ namespace DiscountRefactor
         Task<Cart?> GetByIdAsync(Guid id);
         Task SaveAsync(Cart cart);
     }
-
-    public class Cart
-    {
-        public Guid Id { get; set; }
-        public decimal TotalAmount { get; set; }
-        public string? AppliedDiscountCode { get; set; }
-    }
-
-    
 }
